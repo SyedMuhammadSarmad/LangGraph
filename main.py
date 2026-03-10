@@ -21,8 +21,8 @@ def node_c(state:AgentState) -> AgentState:
     state["messages"].append("C was here")
     return state
 
-def route(state:AgentState) -> AgentState:
-    if state["step"] <= 1:
+def route(state:AgentState) -> str:
+    if state["step"] < 1:
         return "node_b"
     else:
         return "node_c"
@@ -34,9 +34,14 @@ graph.add_node("node_b", node_b)
 graph.add_node("node_c", node_c)
 
 graph.set_entry_point("node_a")
-graph.add_edge("node_a", "node_b")
-graph.add_edge("node_b", "node_c")
-graph.add_edge("node_c", END)
+graph.add_conditional_edges("node_a",
+                            route,
+                            {
+                                "node_b":"node_b",
+                                "node_c":"node_c"
+                            })
+graph.add_edge("node_b",END)
+graph.add_edge("node_c",END)
 app = graph.compile()
 result = app.invoke({"messages": [], "step": 0})
 print(result)
