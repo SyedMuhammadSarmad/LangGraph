@@ -2,7 +2,6 @@ from langgraph.graph import StateGraph,END
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.message import add_messages
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage
 
 from typing import Annotated,TypedDict
 
