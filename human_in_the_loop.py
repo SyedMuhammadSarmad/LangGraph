@@ -84,29 +84,32 @@ config = {
     }
 }
 
-app = graph.compile(memmory)
+#human in the loop using interript before parameter
+app = graph.compile(memmory,interrupt_before=["Tool node"])
 
-result1 = app.invoke({
-    "messages":["hello my name is sarmad"]
-}, config=config)
+# result1 = app.invoke({
+#     "messages":["hello my name is sarmad"]
+# }, config=config)
 
-result2 = app.invoke({
-    "messages":["what is my name?"]
-}, config=config)
+# result2 = app.invoke({
+#     "messages":["what is my name?"]
+# }, config=config)
 
 result3 = app.invoke({
     "messages":["what is weather in karachi"]
 }, config=config)
 
-result4 = app.invoke({
-    "messages":["what is two plus ninty"]
-}, config=config) 
+# result4 = app.invoke({
+#     "messages":["what is two plus ninty"]
+# }, config=config) 
 
-print(result1["messages"][-1].content)
-print(result2["messages"][-1].content)
+
 print(result3["messages"][-1].content)
-print(result4["messages"][-1].content)
 
-#check for agent actually doing tool call
-# for msg in result4["messages"]:
-#     print(type(msg).__name__ +":"+msg.content)
+print(result3["messages"][-1].tool_calls)
+
+input("tool is calling press any key to continue")
+
+resume = app.invoke(None, config=config)
+
+print(resume["messages"][-1].content)
